@@ -5,6 +5,6 @@ class Song extends Media {
   Song(this.artist);
   @override
   void play() {
-    print('Playing song by $artist...');
+    print("Playing song by $artist...");
   }
 }
