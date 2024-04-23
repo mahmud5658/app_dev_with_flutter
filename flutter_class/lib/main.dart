@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_class/module_9/flexible.dart';
 import 'package:flutter_class/module_9/mediaQuery.dart';
 
 void main() {
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const Media(),
+      home: const FlexibleWidget(),
     );
   }
 }
