@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_class/module_9/flexible.dart';
-import 'package:flutter_class/module_9/mediaQuery.dart';
+import 'package:flutter_class/module_9/layout_builder.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +17,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const FlexibleWidget(),
+      home: const LayoutBuilderWidget(),
     );
   }
 }
