@@ -1,10 +1,15 @@
 import 'package:assignment/pages/content.dart';
+import 'package:assignment/pages/page2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
-class Page1 extends StatelessWidget {
+class Page1 extends StatefulWidget {
   const Page1({super.key});
 
+  @override
+  State<Page1> createState() => _Page1State();
+}
+
+class _Page1State extends State<Page1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,35 +49,41 @@ class Page1 extends StatelessWidget {
               itemCount: Content.name.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisSpacing: 10, mainAxisSpacing: 10, crossAxisCount: 2),
-              itemBuilder: (BuildContext context, index) {
-                return Container(
-                  margin: const EdgeInsets.all(10),
-                  height: 180,
-                  width: 180,
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(30),
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                        Content.picture[index],
-                      ),
-                    ),
-                  ),
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        bottom: 10,
-                        left: 10,
-                        child: Text(
-                          Content.name[index],
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                          ),
+              itemBuilder: (BuildContext context, int index) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Page2(index:index,)));
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.all(10),
+                    height: 180,
+                    width: 180,
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(30),
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(
+                          Content.picture[index],
                         ),
                       ),
-                    ],
+                    ),
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          bottom: 10,
+                          left: 10,
+                          child: Text(
+                            Content.name[index],
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
@@ -84,34 +95,40 @@ class Page1 extends StatelessWidget {
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisSpacing: 10, mainAxisSpacing: 10, crossAxisCount: 4),
               itemBuilder: (BuildContext context, index) {
-                return Container(
-                  margin: const EdgeInsets.all(10),
-                  height: 180,
-                  width: 180,
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(30),
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                        Content.picture[index],
-                      ),
-                    ),
-                  ),
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        bottom: 10,
-                        left: 10,
-                        child: Text(
-                          Content.name[index],
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                          ),
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) =>  Page2(index: index,)));
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.all(10),
+                    height: 180,
+                    width: 180,
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(30),
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(
+                          Content.picture[index],
                         ),
                       ),
-                    ],
+                    ),
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          bottom: 10,
+                          left: 10,
+                          child: Text(
+                            Content.name[index],
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },

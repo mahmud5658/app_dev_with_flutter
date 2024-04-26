@@ -28,4 +28,18 @@ class Content {
     'https://library.sportingnews.com/styles/crop_style_16_9_desktop/s3/2021-10/kaka-061914-ap-ftrjpg_1ma4j4278gbz71vi0afps8q9w8.jpg?itok=tGS0SBAd',
     'https://media.cnn.com/api/v1/images/stellar/prod/230322093248-01-mesut-ozil-file.jpg?c=16x9&q=h_653,w_1160,c_fill/f_webp'
   ];
+  static List<String> title = [
+    'Brazilian Footballer',
+    'Argentine Footballer',
+    'Portuguese footballer',
+    'Brazilian Footballer',
+    'Brazilian Footballer',
+    'Belgian footballer',
+    'English footballer',
+    'Brazilian Footballer',
+    'French footballer',
+    'Norwegian footballer',
+    'Brazilian former footballer',
+    'German former footballer'
+  ];
 }
