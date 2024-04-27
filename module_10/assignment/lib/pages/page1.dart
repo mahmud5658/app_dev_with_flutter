@@ -52,8 +52,12 @@ class _Page1State extends State<Page1> {
               itemBuilder: (BuildContext context, int index) {
                 return GestureDetector(
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Page2(index:index,)));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Page2(
+                                  index: index,
+                                )));
                   },
                   child: Container(
                     margin: const EdgeInsets.all(10),
@@ -97,8 +101,12 @@ class _Page1State extends State<Page1> {
               itemBuilder: (BuildContext context, index) {
                 return GestureDetector(
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) =>  Page2(index: index,)));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Page2(
+                                  index: index,
+                                )));
                   },
                   child: Container(
                     margin: const EdgeInsets.all(10),

@@ -1,4 +1,3 @@
-
 class Content {
   static List<String> name = [
     'Neymar JR',
@@ -41,5 +40,19 @@ class Content {
     'Norwegian footballer',
     'Brazilian former footballer',
     'German former footballer'
+  ];
+  static List<String> description = [
+    'Neymar is a Brazilian footballer known for his skill and flair. He played for Santos FC and Barcelona before joining Paris Saint-Germain. He\'s famous for his dribbling and goal-scoring ability.',
+    'Lionel Messi is an Argentine footballer widely considered one of the greatest of all time. He played for Barcelona and now Paris Saint-Germain, known for his extraordinary skill and goal-scoring ability.',
+    'Cristiano Ronaldo is a Portuguese footballer known for his athleticism and scoring ability. He\'s played for top clubs like Manchester United, Real Madrid, and Juventus, winning numerous titles and awards, including multiple Ballon d\'Ors.',
+    'Brazilian goalkeeper known for his shot-stopping abilities, currently playing for Liverpool FC and the Brazilian national team.',
+    'Brazilian forward with exceptional dribbling skills, playing for Real Madrid and the Brazilian national team.',
+    'Belgian midfielder known for his passing and vision, a key player for Manchester City and the Belgian national team.',
+    'English midfielder known for his technical ability and versatility, rising star at Manchester City and the England national team.',
+    'Brazilian goalkeeper known for his distribution and shot-stopping, playing for Manchester City and the Brazilian national team.Brazilian goalkeeper known for his distribution and shot-stopping, playing for Manchester City and the Brazilian national team.',
+    'French forward known for his pace and goal-scoring ability, playing for Paris Saint-Germain and the French national team.',
+    'Norwegian striker known for his strength and goal-scoring prowess, currently playing for Borussia Dortmund.',
+    'Brazilian retired footballer who was known for his skill, speed, and creativity, having played for AC Milan, Real Madrid, and the Brazilian national team.',
+    'German midfielder known for his playmaking abilities and vision, formerly of Arsenal and the German national team.'
   ];
 }
