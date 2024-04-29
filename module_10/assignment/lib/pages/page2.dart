@@ -1,5 +1,7 @@
 import 'package:assignment/pages/content.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class Page2 extends StatelessWidget {
   final int index;
@@ -71,18 +73,20 @@ class Page2 extends StatelessWidget {
                   padding: const EdgeInsets.all(15),
                   child: Text(Content.description[index]),
                 ),
-                Center(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * .95,
-                    height: 50,
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.circular(30)),
-                    child: const Center(
-                        child: Text(
-                      'See more',
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    )),
+                GestureDetector(
+                  child: Center(
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * .95,
+                      height: 50,
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          borderRadius: BorderRadius.circular(30)),
+                      child: const Center(
+                          child: Text(
+                        'See more',
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      )),
+                    ),
                   ),
                 ),
                 Container(
@@ -194,18 +198,20 @@ class Page2 extends StatelessWidget {
                         const SizedBox(
                           height: 15,
                         ),
-                        Container(
-                          margin: const EdgeInsets.only(right: 10),
-                          width: double.infinity,
-                          height: 50,
-                          decoration: BoxDecoration(
-                              color: Theme.of(context).primaryColor,
-                              borderRadius: BorderRadius.circular(25)),
-                          child: const Center(
-                            child: Text(
-                              'See more',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
+                        GestureDetector(
+                          child: Container(
+                            margin: const EdgeInsets.only(right: 10),
+                            width: double.infinity,
+                            height: 50,
+                            decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor,
+                                borderRadius: BorderRadius.circular(25)),
+                            child: const Center(
+                              child: Text(
+                                'See more',
+                                style:
+                                    TextStyle(color: Colors.white, fontSize: 20),
+                              ),
                             ),
                           ),
                         ),
