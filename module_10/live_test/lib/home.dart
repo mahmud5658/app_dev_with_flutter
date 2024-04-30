@@ -43,6 +43,8 @@ class HomePage extends StatelessWidget {
                 margin: EdgeInsets.only(top: 10),
                 child: Center(
                   child: Text(
+                    textAlign: TextAlign.center,
+                    
                     'Neymar is a Brazilian footballer known for his skill and flair. He played for Santos FC and Barcelona before joining Paris Saint-Germain. He\'s famous for his dribbling and goal-scoring ability.',
                     style: TextStyle(color: Colors.black, fontSize: 20),
                   ),
