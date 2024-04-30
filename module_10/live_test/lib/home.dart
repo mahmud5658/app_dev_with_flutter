@@ -16,10 +16,10 @@ class HomePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              margin: EdgeInsets.only(top: 30),
+              margin: const EdgeInsets.only(top: 30),
               height: 150,
               width: 150,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   shape: BoxShape.circle,
                   color: Colors.blue,
                   image: DecorationImage(
@@ -28,20 +28,20 @@ class HomePage extends StatelessWidget {
                           'https://assets.goal.com/images/v3/blt6e29869bfab4c3a8/Neymar.jpg?auto=webp&format=pjpg&width=1080&quality=60'))),
             ),
             Container(
-                margin: EdgeInsets.only(top: 10),
-                child: Text(
+                margin: const EdgeInsets.only(top: 10),
+                child: const Text(
                   'Neymar JR',
                   style: TextStyle(color: Colors.black, fontSize: 20),
                 )),
             Container(
-                margin: EdgeInsets.only(top: 5),
-                child: Text(
+                margin: const EdgeInsets.only(top: 5),
+                child: const Text(
                   'neymarjonior@gmail.com',
                   style: TextStyle(color: Colors.grey, fontSize: 20),
                 )),
                 Container(
-                margin: EdgeInsets.only(top: 15,right: 20,left: 20),
-                child: Center(
+                margin:const  EdgeInsets.only(top: 15,right: 20,left: 20),
+                child:const  Center(
                   child: Text(
                     textAlign: TextAlign.center,
                     
