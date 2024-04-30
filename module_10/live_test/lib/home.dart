@@ -40,12 +40,12 @@ class HomePage extends StatelessWidget {
                   style: TextStyle(color: Colors.grey, fontSize: 20),
                 )),
                 Container(
-                margin: EdgeInsets.only(top: 10),
+                margin: EdgeInsets.only(top: 15,right: 20,left: 20),
                 child: Center(
                   child: Text(
                     textAlign: TextAlign.center,
                     
-                    'Neymar is a Brazilian footballer known for his skill and flair. He played for Santos FC and Barcelona before joining Paris Saint-Germain. He\'s famous for his dribbling and goal-scoring ability.',
+                    'Neymar da Silva Santos Júnior, commonly known as Neymar Jr., is a Brazilian professional footballer widely regarded as one of the most talented players of his generation. Born on February 5, 1992, in Mogi das Cruzes, São Paulo, Brazil, Neymar began his football career at a young age and quickly rose through the ranks to become a star player.',
                     style: TextStyle(color: Colors.black, fontSize: 20),
                   ),
                 )),
