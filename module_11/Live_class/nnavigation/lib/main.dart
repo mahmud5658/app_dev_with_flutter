@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:nnavigation/Screen/Settings.dart';
 import 'package:nnavigation/Screen/home.dart';
+import 'package:nnavigation/Screen/profile.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,9 +12,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const  MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Home(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const Home(),
+        '/settings': (context) => const Settings(),
+        '/profile': (context) => const Profile(),
+      },
     );
   }
 }
