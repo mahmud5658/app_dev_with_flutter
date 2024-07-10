@@ -10,7 +10,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final CounterController _counterController = CounterController();
+
+
+  final CounterController _counterController = Get.put(CounterController());
   int counterValue = 0;
   @override
   Widget build(BuildContext context) {
@@ -22,13 +24,20 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Obx(
-              () => Text(
-                  'Counter Values:${_counterController.count}',
-                  style: const TextStyle(
-                      fontSize: 30, fontWeight: FontWeight.bold),
-                ),
-            )
+            // Obx(
+            //   () => Text(
+            //       'Counter Values:${_counterController.count}',
+            //       style: const TextStyle(
+            //           fontSize: 30, fontWeight: FontWeight.bold),
+            //     ),
+            // )
+            GetBuilder<CounterController>(builder: (counterController) {
+              return Text(
+                'Counter Values:${_counterController.count}',
+                style:
+                    const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              );
+            })
           ],
         ),
       ),
