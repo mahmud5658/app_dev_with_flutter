@@ -1,15 +1,17 @@
 import 'package:crud/rest_api/rest_client.dart';
+import 'package:crud/screen/product_grid_view.dart';
 import 'package:crud/style/style.dart';
 import 'package:flutter/material.dart';
 
-class ProductCreate extends StatefulWidget {
-  const ProductCreate({super.key});
+class ProductUpdateScreen extends StatefulWidget {
+  final Map productItem;
+  const ProductUpdateScreen({super.key, required this.productItem});
 
   @override
-  State<ProductCreate> createState() => _ProductCreateState();
+  State<ProductUpdateScreen> createState() => _ProductUpdateScreenState();
 }
 
-class _ProductCreateState extends State<ProductCreate> {
+class _ProductUpdateScreenState extends State<ProductUpdateScreen> {
   Map<String, String> formValues = {
     "Img": "",
     "ProductCode": "",
@@ -20,6 +22,23 @@ class _ProductCreateState extends State<ProductCreate> {
   };
 
   bool loading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      formValues.update('Img', (value) => widget.productItem['Img']);
+      formValues.update(
+          'ProductCode', (value) => widget.productItem['ProductCode']);
+      formValues.update(
+          'ProductName', (value) => widget.productItem['ProductName']);
+      formValues.update('Qty', (value) => widget.productItem['Qty']);
+      formValues.update(
+          'TotalPrice', (value) => widget.productItem['TotalPrice']);
+      formValues.update(
+          'UnitPrice', (value) => widget.productItem['UnitPrice']);
+    });
+  }
 
   InputOnChange(mapKey, textValue) {
     setState(() {
@@ -45,7 +64,9 @@ class _ProductCreateState extends State<ProductCreate> {
       setState(() {
         loading = true;
       });
-      await productCreateRequest(formValues);
+      await productUpdateRequest(formValues, widget.productItem['_id']);
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (context) => ProductGridViewScreen()),(Route route)=>false);
       setState(() {
         loading = false;
       });
@@ -56,7 +77,7 @@ class _ProductCreateState extends State<ProductCreate> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Create Product"),
+        title: Text("Update Product"),
       ),
       body: Stack(
         children: [
@@ -71,6 +92,7 @@ class _ProductCreateState extends State<ProductCreate> {
                     child: Column(
                       children: [
                         TextFormField(
+                          initialValue: formValues['ProductName'],
                           decoration: appInputDecoration('Product Name'),
                           onChanged: (textValue) {
                             InputOnChange('ProductName', textValue);
@@ -80,6 +102,7 @@ class _ProductCreateState extends State<ProductCreate> {
                           height: 20,
                         ),
                         TextFormField(
+                          initialValue: formValues['ProductCode'],
                           decoration: appInputDecoration('Product Code '),
                           onChanged: (textValue) {
                             InputOnChange('ProductCode', textValue);
@@ -89,6 +112,7 @@ class _ProductCreateState extends State<ProductCreate> {
                           height: 20,
                         ),
                         TextFormField(
+                          initialValue: formValues['Img'],
                           decoration: appInputDecoration('Product Image'),
                           onChanged: (textValue) {
                             InputOnChange('Img', textValue);
@@ -98,6 +122,7 @@ class _ProductCreateState extends State<ProductCreate> {
                           height: 20,
                         ),
                         TextFormField(
+                          initialValue: formValues['UnitPrice'],
                           decoration: appInputDecoration('Unit Price'),
                           onChanged: (textValue) {
                             InputOnChange('UnitPrice', textValue);
@@ -107,6 +132,7 @@ class _ProductCreateState extends State<ProductCreate> {
                           height: 20,
                         ),
                         TextFormField(
+                          initialValue: formValues['TotalPrice'],
                           decoration: appInputDecoration('Total Price'),
                           onChanged: (textValue) {
                             InputOnChange('TotalPrice', textValue);
@@ -115,7 +141,8 @@ class _ProductCreateState extends State<ProductCreate> {
                         const SizedBox(
                           height: 20,
                         ),
-                       TextFormField(
+                        TextFormField(
+                          initialValue: formValues['Qty'],
                           decoration: appInputDecoration('Quantity'),
                           onChanged: (textValue) {
                             InputOnChange('TotalPrice', textValue);

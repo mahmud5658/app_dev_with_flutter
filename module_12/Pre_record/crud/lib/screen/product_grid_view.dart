@@ -1,4 +1,6 @@
 import 'package:crud/rest_api/rest_client.dart';
+import 'package:crud/screen/product_create.dart';
+import 'package:crud/screen/product_update.dart';
 import 'package:crud/style/style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +29,39 @@ class _ProductGridViewScreenState extends State<ProductGridViewScreen> {
     });
   }
 
+  deleteItem(id) async {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Delete! '),
+            content: Text('Once delete, you cannot get it back'),
+            actions: [
+              OutlinedButton(
+                  onPressed: () async {
+                    Navigator.pop(context);
+                    await productDeleteRequest(id);
+                    setState(() {
+                      loading = true;
+                    });
+                    await callData();
+                  },
+                  child: Text('Yes')),
+              OutlinedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('No'))
+            ],
+          );
+        });
+  }
+
+  GotoUpdate(context,productItem) {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => ProductUpdateScreen(productItem: productItem,)));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +77,7 @@ class _ProductGridViewScreenState extends State<ProductGridViewScreen> {
                       child: CircularProgressIndicator(),
                     ))
                   : RefreshIndicator(
-                      onRefresh: ()async {
+                      onRefresh: () async {
                         await callData();
                       },
                       child: GridView.builder(
@@ -77,7 +112,9 @@ class _ProductGridViewScreenState extends State<ProductGridViewScreen> {
                                               MainAxisAlignment.end,
                                           children: [
                                             OutlinedButton(
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  GotoUpdate(context,productList[index]);
+                                                },
                                                 child: Icon(
                                                   CupertinoIcons
                                                       .ellipsis_vertical_circle,
@@ -88,7 +125,10 @@ class _ProductGridViewScreenState extends State<ProductGridViewScreen> {
                                               width: 4,
                                             ),
                                             OutlinedButton(
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  deleteItem(productList[index]
+                                                      ['_id']);
+                                                },
                                                 child: const Icon(
                                                   CupertinoIcons.delete,
                                                   size: 18,
@@ -105,6 +145,13 @@ class _ProductGridViewScreenState extends State<ProductGridViewScreen> {
                           }),
                     ))
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const ProductCreate()));
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }
