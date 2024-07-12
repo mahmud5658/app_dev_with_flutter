@@ -28,7 +28,7 @@ class CrudApp extends StatelessWidget {
                   borderSide: BorderSide(color: Colors.red))),
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
-                fixedSize: Size.fromWidth(double.maxFinite),
+                fixedSize: const Size.fromWidth(double.maxFinite),
                 backgroundColor: Colors.purple,
                 foregroundColor: Colors.white,
                 padding:
@@ -51,7 +51,7 @@ class CrudApp extends StatelessWidget {
                 OutlineInputBorder(borderSide: BorderSide(color: Colors.red))),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-              fixedSize: Size.fromWidth(double.maxFinite),
+              fixedSize: const Size.fromWidth(double.maxFinite),
               backgroundColor: Colors.purple,
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
