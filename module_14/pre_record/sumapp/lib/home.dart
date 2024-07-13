@@ -21,11 +21,7 @@ class _HomePageState extends State<HomePage> {
 
     addAllNumber() {
       setState(() {
-        formValue.forEach(
-          (key, value) {
-            result += value;
-          },
-        );
+        result = formValue['num1']! + formValue['num2']!;
       });
     }
 
