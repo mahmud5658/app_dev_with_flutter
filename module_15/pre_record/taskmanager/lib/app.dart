@@ -12,8 +12,9 @@ class TaskManager extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Task Manager',
-      initialRoute: '/',
+      initialRoute: '/pin_verification',
       routes: {
         '/':(context)=> const SplashScreen(),
         '/login':(context)=> const LoginScreen(),
