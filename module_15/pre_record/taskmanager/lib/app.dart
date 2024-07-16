@@ -14,7 +14,7 @@ class TaskManager extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Task Manager',
-      initialRoute: '/pin_verification',
+      initialRoute: '/login',
       routes: {
         '/':(context)=> const SplashScreen(),
         '/login':(context)=> const LoginScreen(),

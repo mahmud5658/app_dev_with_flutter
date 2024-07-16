@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:taskmanager/app.dart';
 
-void main() {
-  runApp(const TaskManager());
+class TaskCreateScreen extends StatefulWidget {
+  const TaskCreateScreen({super.key});
+
+  @override
+  State<TaskCreateScreen> createState() => _TaskCreateScreenState();
+}
+
+class _TaskCreateScreenState extends State<TaskCreateScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
 }
