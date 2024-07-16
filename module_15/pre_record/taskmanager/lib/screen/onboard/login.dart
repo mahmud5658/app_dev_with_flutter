@@ -31,14 +31,18 @@ class _LoginScreenState extends State<LoginScreen> {
         loading = true;
       });
       bool response = await loginRequest(formValues);
-      // if (response == true) {
-      //   //navigate to dashboard page
-      // } else {
-        
-      // }
-      setState(() {
+      if (response == true) {
+        //navigate to dashboard page
+        Navigator.pushNamedAndRemoveUntil(
+            // ignore: use_build_context_synchronously
+            context,
+            '/new_task',
+            (route) => false);
+      } else {
+        setState(() {
           loading = false;
         });
+      }
     }
   }
 
@@ -51,10 +55,11 @@ class _LoginScreenState extends State<LoginScreen> {
           Container(
             padding: const EdgeInsets.all(30),
             child: loading
-                ? Center(child: const CircularProgressIndicator(
-                  // backgroundColor: colorGreen,
-                  color: colorGreen,
-                ))
+                ? const Center(
+                    child: CircularProgressIndicator(
+                    // backgroundColor: colorGreen,
+                    color: colorGreen,
+                  ))
                 : Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,7 +101,49 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPressed: () {
                             formOnSubmit();
                           },
-                          child: successButtonChild('Login'))
+                          child: successButtonChild('Login')),
+                      Container(
+                        alignment: Alignment.center,
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 20,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, '/email_verification');
+                              },
+                              child: Text(
+                                'Forget Password?',
+                                style: head7Text(colorLightGray),
+                              ),
+                            ),
+                             const SizedBox(
+                              height: 15,
+                            ),
+                             InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, '/registration');
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Don\'t have an account? ',
+                                    style: head7Text(colorDarkBlue),
+                                  ),
+                                  Text(
+                                    'Sign Up',
+                                    style: head7Text(colorGreen),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
                     ],
                   ),
           ),
