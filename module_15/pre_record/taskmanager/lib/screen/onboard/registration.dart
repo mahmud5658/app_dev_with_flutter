@@ -70,10 +70,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         children: [
           screenBackground(context),
           SingleChildScrollView(
-            child: loading?const Center(
-              child:  CircularProgressIndicator(
-                color: colorGreen,
-              ),
+            child: loading?const CircularProgressIndicator(
+              color: colorGreen,
             ):
             Container(
                     padding: const EdgeInsets.all(30),
