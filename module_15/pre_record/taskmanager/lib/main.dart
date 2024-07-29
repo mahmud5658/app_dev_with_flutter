@@ -11,6 +11,6 @@ void main() async {
       firstRoute: '/login',
     ));
   } else {
-    runApp(const TaskManager(firstRoute: '/new_task'));
+    runApp(const TaskManager(firstRoute: '/'));
   }
 }

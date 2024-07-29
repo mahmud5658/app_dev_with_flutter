@@ -70,6 +70,7 @@ Future<bool> verifyOtpRequest(email, otp) async {
     return false;
   }
 }
+
 Future<bool> setPasswordRequest(formValues) async {
   var url = Uri.parse("$baseUrl/RecoverResetPass");
   var postBody = jsonEncode(formValues);
@@ -82,5 +83,25 @@ Future<bool> setPasswordRequest(formValues) async {
   } else {
     errorToast('Request failed! Try agian!!!');
     return false;
+  }
+}
+
+Future<List> taskListRequest(status) async {
+  var url = Uri.parse("$baseUrl/listTaskByStatus/$status");
+  String? token = await readUserData('token');
+
+  var requestHeaderWithToken = {
+    "Content-Type": "application/json",
+    "token": "$token"
+  };
+  var response = await http.get(url, headers: requestHeaderWithToken);
+  var resultCode = response.statusCode;
+  var resultBody = jsonDecode(response.body);
+  if (resultCode == 200 && resultBody['status'] == 'success') {
+    successToast("Request Success");
+    return resultBody['data'];
+  } else {
+    errorToast('Request failed! Try agian!!!');
+    return [];
   }
 }

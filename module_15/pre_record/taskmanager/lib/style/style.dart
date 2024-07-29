@@ -1,4 +1,4 @@
-import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -13,6 +13,16 @@ const colorWhite = Color.fromRGBO(255, 255, 255, 1.0);
 const colorDarkBlue = Color.fromRGBO(44, 62, 80, 1.0);
 const colorLightGray = Color.fromRGBO(135, 142, 150, 1.0);
 const colorLight = Color.fromRGBO(211, 211, 211, 1.0);
+
+SizedBox itemSizedBox(child) {
+  return SizedBox(
+    width: double.infinity,
+    child: Container(
+      padding: const EdgeInsets.all(10),
+      child: child,
+    ),
+  );
+}
 
 PinTheme appOTPStyle() {
   return PinTheme(
@@ -46,6 +56,7 @@ TextStyle head6Text(textColor) {
       fontFamily: 'poppins',
       fontWeight: FontWeight.w400);
 }
+
 TextStyle head7Text(textColor) {
   return TextStyle(
       color: textColor,
@@ -54,17 +65,25 @@ TextStyle head7Text(textColor) {
       fontWeight: FontWeight.w400);
 }
 
+TextStyle head9Text(textColor) {
+  return TextStyle(
+      color: textColor,
+      fontSize: 9,
+      fontFamily: 'poppins',
+      fontWeight: FontWeight.w400);
+}
+
 
 InputDecoration appInputDecoration(label) {
   return InputDecoration(
       focusedBorder: const OutlineInputBorder(
-        borderSide:  BorderSide(color: colorGreen, width: 1),
+        borderSide: BorderSide(color: colorGreen, width: 1),
       ),
       fillColor: colorWhite,
       filled: true,
       contentPadding: const EdgeInsets.fromLTRB(20, 10, 10, 20),
       enabledBorder: const OutlineInputBorder(
-        borderSide:  BorderSide(color: colorDarkBlue, width: 0.0),
+        borderSide: BorderSide(color: colorDarkBlue, width: 0.0),
       ),
       border: const OutlineInputBorder(),
       labelStyle: const TextStyle(color: colorDarkBlue),
@@ -78,8 +97,8 @@ DecoratedBox appDropDownStyle(child) {
         border: Border.all(color: Colors.white, width: 1),
         borderRadius: BorderRadius.circular(4),
       ),
-      child:
-          Padding(padding: const EdgeInsets.only(left: 30, right: 30), child: child));
+      child: Padding(
+          padding: const EdgeInsets.only(left: 30, right: 30), child: child));
 }
 
 SvgPicture screenBackground(context) {
@@ -100,7 +119,6 @@ ButtonStyle appButtonStyle() {
       foregroundColor: colorWhite,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)));
 }
-
 
 TextStyle buttonTextStyle() {
   return const TextStyle(

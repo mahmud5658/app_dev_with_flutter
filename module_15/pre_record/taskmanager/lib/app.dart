@@ -4,8 +4,8 @@ import 'package:taskmanager/screen/onboard/login.dart';
 import 'package:taskmanager/screen/onboard/pin_verification.dart';
 import 'package:taskmanager/screen/onboard/registration.dart';
 import 'package:taskmanager/screen/onboard/set_password.dart';
-import 'package:taskmanager/screen/onboard/splash.dart';
-import 'package:taskmanager/screen/task/new_task.dart';
+import 'package:taskmanager/screen/task/home.dart';
+
 
 class TaskManager extends StatelessWidget {
   final String firstRoute;
@@ -18,13 +18,12 @@ class TaskManager extends StatelessWidget {
       title: 'Task Manager',
       initialRoute: firstRoute,
       routes: {
-        '/': (context) => const SplashScreen(),
+        '/': (context) => const HomeScreen(),
         '/login': (context) => const LoginScreen(),
         '/registration': (context) => const RegistrationScreen(),
         '/email_verification': (context) => const EmailVerificationScreen(),
         '/pin_verification': (context) => const PinVerificationScreen(),
         '/set_password': (context) => const SetPasswordScreen(),
-        '/new_task': (context) => const NewTaskScreen(),
       },
     );
   }

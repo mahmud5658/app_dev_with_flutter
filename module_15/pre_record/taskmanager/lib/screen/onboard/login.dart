@@ -36,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Navigator.pushNamedAndRemoveUntil(
             // ignore: use_build_context_synchronously
             context,
-            '/new_task',
+            '/',
             (route) => false);
       } else {
         setState(() {
