@@ -17,7 +17,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int tabIndex = 0;
 
-  Map<String, String> profileData = {
+  Map<String,String> profileData = {
     "email": "",
     "firstName": "",
     "lastName": "",
@@ -29,6 +29,8 @@ class _HomeScreenState extends State<HomeScreen> {
     String? firstName = await readUserData('firstName');
     String? lastName = await readUserData('lastName');
     String? photo = await readUserData('photo');
+
+    photo ??= deImage;
 
     setState(() {
       profileData = {

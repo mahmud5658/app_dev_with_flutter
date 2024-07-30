@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:taskmanager/style/style.dart';
 import 'package:taskmanager/utility/utility.dart';
@@ -12,9 +14,7 @@ AppBar taskappBar(context, profileData) {
           CircleAvatar(
             backgroundColor: Colors.transparent,
             radius: 24,
-            child: ClipOval(
-              child: Image.memory(showBase64Image(profileData['photo'].toString())),
-            ),
+            child: ClipOval(child: Image.memory(showBase64Image(profileData['photo'])),),
           ),
           const SizedBox(
             width: 10,

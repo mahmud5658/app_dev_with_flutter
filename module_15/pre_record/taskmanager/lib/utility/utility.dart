@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,7 +33,7 @@ Future<String?> readUserData(key) async {
   return userData;
 }
 
-showBase64Image(base64String) {
+Uint8List showBase64Image(base64String) {
   UriData? data = Uri.parse(base64String).data;
   Uint8List image = data!.contentAsBytes();
   return image;
@@ -43,3 +44,4 @@ Future<bool> removeToken() async {
   prefs.clear();
   return true;
 }
+
