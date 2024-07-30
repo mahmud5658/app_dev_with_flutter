@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:taskmanager/ui/screen/auth/splash_screen.dart';
 import 'package:taskmanager/ui/utility/color.dart';
 
+
 class TaskManagerApp extends StatelessWidget {
   const TaskManagerApp({Key? key}) : super(key: key);
 

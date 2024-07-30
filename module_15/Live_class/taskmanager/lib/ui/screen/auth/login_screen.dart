@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:taskmanager/ui/screen/auth/email_verification_screen.dart';
 import 'package:taskmanager/ui/screen/auth/signup_screen.dart';
+import 'package:taskmanager/ui/screen/main_bottom_screen.dart';
 import 'package:taskmanager/ui/utility/color.dart';
 import 'package:taskmanager/ui/widgets/background_widgets.dart';
 
@@ -34,7 +35,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   'Get Started With',
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
-               
                 const SizedBox(
                   height: 24,
                 ),
@@ -59,7 +59,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 16,
                 ),
                 ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      _onTapNextButton();
+                    },
                     child: const Icon(Icons.arrow_circle_right_outlined)),
                 const SizedBox(
                   height: 36,
@@ -99,6 +101,11 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       )),
     );
+  }
+
+  void _onTapNextButton() {
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (context) => const BottomNavScreen()));
   }
 
   void _onTapSignUpButton() {
