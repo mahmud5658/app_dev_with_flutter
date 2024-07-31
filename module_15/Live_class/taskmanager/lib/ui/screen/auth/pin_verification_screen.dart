@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:taskmanager/ui/screen/auth/login_screen.dart';
+import 'package:taskmanager/ui/screen/auth/signin_screen.dart';
 import 'package:taskmanager/ui/screen/auth/reset_password_screen.dart';
 import 'package:taskmanager/ui/utility/color.dart';
 import 'package:taskmanager/ui/widgets/background_widgets.dart';

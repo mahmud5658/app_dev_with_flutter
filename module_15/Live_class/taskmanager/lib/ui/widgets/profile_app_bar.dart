@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:taskmanager/ui/controller/auth_controller.dart';
+import 'package:taskmanager/ui/screen/auth/signin_screen.dart';
 import 'package:taskmanager/ui/screen/task/update_profile_screen.dart';
 import 'package:taskmanager/ui/utility/color.dart';
 import 'package:taskmanager/ui/widgets/network_cached_image.dart';
@@ -23,16 +25,16 @@ AppBar profileAppBar(context, [bool fromUpdateProfile = false]) {
             MaterialPageRoute(
                 builder: (context) => const UpdateProfileScreen()));
       },
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Abdullah Al Mahmud',
-            style: TextStyle(fontSize: 16, color: Colors.white),
+            AuthController.userData.fullName,
+            style: const TextStyle(fontSize: 16, color: Colors.white),
           ),
           Text(
-            'abdullah@gmail.com',
-            style: TextStyle(
+            AuthController.userData.email ?? '',
+            style: const TextStyle(
                 fontSize: 12, color: Colors.white, fontWeight: FontWeight.w500),
           ),
         ],
@@ -40,7 +42,13 @@ AppBar profileAppBar(context, [bool fromUpdateProfile = false]) {
     ),
     actions: [
       IconButton(
-          onPressed: () {},
+          onPressed: () async {
+            await AuthController.clearAllData();
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
+                (route) => false);
+          },
           icon: const Icon(
             Icons.logout,
             color: Colors.white,
