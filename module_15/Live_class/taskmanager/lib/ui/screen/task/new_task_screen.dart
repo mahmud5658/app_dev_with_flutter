@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:taskmanager/ui/screen/add_new_task_screen.dart';
+import 'package:taskmanager/ui/screen/task/add_new_task_screen.dart';
 import 'package:taskmanager/ui/widgets/task_item.dart';
 import 'package:taskmanager/ui/widgets/task_summary_card.dart';
 
@@ -46,7 +46,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
   }
 
   SingleChildScrollView _buildSummarySection() {
-    return SingleChildScrollView(
+    return const SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
         children: [

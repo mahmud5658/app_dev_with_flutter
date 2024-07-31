@@ -11,12 +11,12 @@ class TaskItem extends StatelessWidget {
       elevation: 0,
       color: Colors.white,
       child: ListTile(
-        title: Text('Title will be here'),
+        title: const Text('Title will be here'),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Description will be here'),
-            Text(
+            const Text('Description will be here'),
+            const Text(
               'Date: 12/12/24',
               style:
                   TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
@@ -25,10 +25,10 @@ class TaskItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Chip(
-                  label: Text('New'),
+                  label: const Text('New'),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16)),
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 ),
                 ButtonBar(
                   children: [

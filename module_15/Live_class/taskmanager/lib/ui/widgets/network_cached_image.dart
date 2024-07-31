@@ -16,10 +16,10 @@ class NetworkCachedImage extends StatelessWidget {
     return CachedNetworkImage(
       imageUrl: url,
       progressIndicatorBuilder: (_, __, ___) {
-        return CircularProgressIndicator();
+        return const CircularProgressIndicator();
       },
       errorWidget: (_, __, ___) {
-        return Icon(Icons.error_outline);
+        return const Icon(Icons.error_outline);
       },
     );
   }

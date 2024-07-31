@@ -2,7 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:taskmanager/ui/screen/auth/email_verification_screen.dart';
 import 'package:taskmanager/ui/screen/auth/signup_screen.dart';
-import 'package:taskmanager/ui/screen/main_bottom_screen.dart';
+import 'package:taskmanager/ui/screen/task/main_bottom_screen.dart';
 import 'package:taskmanager/ui/utility/color.dart';
 import 'package:taskmanager/ui/widgets/background_widgets.dart';
 
