@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:taskmanager/data/model/network_response.dart';
+import 'package:taskmanager/data/model/task_list_wraper_model.dart';
+import 'package:taskmanager/data/model/task_model.dart';
+import 'package:taskmanager/data/network_caller/network_caller.dart';
+import 'package:taskmanager/data/utilities/url.dart';
 import 'package:taskmanager/ui/screen/task/add_new_task_screen.dart';
+import 'package:taskmanager/ui/widgets/snack_bar_message.dart';
 import 'package:taskmanager/ui/widgets/task_item.dart';
 import 'package:taskmanager/ui/widgets/task_summary_card.dart';
 
@@ -11,6 +17,16 @@ class NewTaskScreen extends StatefulWidget {
 }
 
 class _NewTaskScreenState extends State<NewTaskScreen> {
+  bool _inProgess = false;
+
+  List<TaskModel> newTaskList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _getNewTask();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,11 +39,24 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
               height: 8,
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return const TaskItem();
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  _getNewTask();
                 },
+                child: Visibility(
+                  visible: _inProgess == false,
+                  replacement: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  child: ListView.builder(
+                    itemCount: newTaskList.length,
+                    itemBuilder: (context, index) {
+                      return TaskItem(
+                        taskModel: newTaskList[index],
+                      );
+                    },
+                  ),
+                ),
               ),
             ),
           ],
@@ -37,8 +66,10 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
         backgroundColor: Colors.green,
         foregroundColor: Colors.white,
         onPressed: () async {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const AddNewTaskScreen()));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const AddNewTaskScreen()));
         },
         child: const Icon(Icons.add),
       ),
@@ -69,5 +100,30 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
         ],
       ),
     );
+  }
+
+  Future<void> _getNewTask() async {
+    if (mounted) {
+      setState(() {
+        _inProgess = true;
+      });
+    }
+    NetworkResponse response = await NetworkCaller.getRequest(Urls.newTask);
+
+    if (response.isSuccess) {
+      TaskListWraperModel taskListWraperModel =
+          TaskListWraperModel.fromJson(response.responseData);
+      newTaskList = taskListWraperModel.taskList ?? [];
+    } else {
+      if (mounted) {
+        showSnackBarMessage(
+            context, response.errorMessage ?? 'Get New task failed! try again');
+      }
+    }
+    if (mounted) {
+      setState(() {
+        _inProgess = false;
+      });
+    }
   }
 }

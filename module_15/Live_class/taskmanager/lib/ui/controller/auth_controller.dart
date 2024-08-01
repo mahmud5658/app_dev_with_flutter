@@ -7,7 +7,7 @@ class AuthController {
   static String accessToken = '';
   static const String _accessTokenKey = 'access_token';
   static const String _userDataKey = 'user_data';
-  static UserModel userData = '' as UserModel;
+  static UserModel? userData ;
 
   static Future<void> saveUserAccessToken(String token) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -24,6 +24,8 @@ class AuthController {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.setString(
         _userDataKey, jsonEncode(userModel.toJson()));
+
+    userData = userModel;
   }
 
   static Future<UserModel?> getUserData() async {
