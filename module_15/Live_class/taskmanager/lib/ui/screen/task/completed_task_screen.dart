@@ -43,6 +43,9 @@ class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
                 itemBuilder: (context, index) {
                   return TaskItem(
                     taskModel: compeletedTaskList[index],
+                    onUpdateTask: () {
+                      _getCompletedTask();
+                    },
                   );
                 }),
           ),
@@ -66,8 +69,8 @@ class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
       compeletedTaskList = taskListWraperModel.taskList ?? [];
     } else {
       if (mounted) {
-        showSnackBarMessage(
-            context, response.errorMessage ?? 'Get completed task failed! try again');
+        showSnackBarMessage(context,
+            response.errorMessage ?? 'Get completed task failed! try again');
       }
     }
     if (mounted) {

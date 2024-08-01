@@ -7,7 +7,6 @@ import 'package:taskmanager/data/utilities/url.dart';
 import 'package:taskmanager/ui/widgets/snack_bar_message.dart';
 import 'package:taskmanager/ui/widgets/task_item.dart';
 
-
 class InProgressTaskScreen extends StatefulWidget {
   const InProgressTaskScreen({Key? key}) : super(key: key);
 
@@ -16,8 +15,7 @@ class InProgressTaskScreen extends StatefulWidget {
 }
 
 class _InProgressTaskScreenState extends State<InProgressTaskScreen> {
-
-   bool _inProgess = false;
+  bool _inProgess = false;
   List<TaskModel> inProgressTaskList = [];
 
   @override
@@ -29,11 +27,10 @@ class _InProgressTaskScreenState extends State<InProgressTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       body: Padding(
         padding: const EdgeInsets.only(top: 8, right: 8, left: 8),
         child: RefreshIndicator(
-              onRefresh: () async {
+          onRefresh: () async {
             _getInProgressTask();
           },
           child: Visibility(
@@ -44,8 +41,11 @@ class _InProgressTaskScreenState extends State<InProgressTaskScreen> {
             child: ListView.builder(
                 itemCount: inProgressTaskList.length,
                 itemBuilder: (context, index) {
-                  return  TaskItem(
+                  return TaskItem(
                     taskModel: inProgressTaskList[index],
+                    onUpdateTask: () {
+                      _getInProgressTask();
+                    },
                   );
                 }),
           ),
@@ -53,7 +53,8 @@ class _InProgressTaskScreenState extends State<InProgressTaskScreen> {
       ),
     );
   }
-   Future<void> _getInProgressTask() async {
+
+  Future<void> _getInProgressTask() async {
     if (mounted) {
       setState(() {
         _inProgess = true;

@@ -43,6 +43,9 @@ class _CancelTaskScreenState extends State<CancelTaskScreen> {
                 itemBuilder: (context, index) {
                   return TaskItem(
                     taskModel: canceledTaskList[index],
+                    onUpdateTask: () {
+                      _getCanceledTask();
+                    },
                   );
                 }),
           ),
@@ -57,8 +60,7 @@ class _CancelTaskScreenState extends State<CancelTaskScreen> {
         _inProgess = true;
       });
     }
-    NetworkResponse response =
-        await NetworkCaller.getRequest(Urls.inProgressTask);
+    NetworkResponse response = await NetworkCaller.getRequest(Urls.cancelTask);
 
     if (response.isSuccess) {
       TaskListWraperModel taskListWraperModel =
