@@ -1,6 +1,16 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:taskmanager/data/model/network_response.dart';
+import 'package:taskmanager/data/model/user_model.dart';
+import 'package:taskmanager/data/network_caller/network_caller.dart';
+import 'package:taskmanager/data/utilities/url.dart';
+import 'package:taskmanager/ui/controller/auth_controller.dart';
 import 'package:taskmanager/ui/widgets/background_widgets.dart';
 import 'package:taskmanager/ui/widgets/profile_app_bar.dart';
+import 'package:taskmanager/ui/widgets/snack_bar_message.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
   const UpdateProfileScreen({Key? key}) : super(key: key);
@@ -15,8 +25,19 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _mobileController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  XFile? _selectedImage;
+  bool _updateInProgress = false;
+
+  @override
+  void initState() {
+    super.initState();
+    final userData = AuthController.userData!;
+    _emailController.text = userData.email ?? '';
+    _firstNameController.text = userData.firstName ?? '';
+    _lastNameController.text = userData.lastName ?? '';
+    _mobileController.text = userData.mobile ?? '';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,9 +117,15 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                   const SizedBox(
                     height: 16,
                   ),
-                  ElevatedButton(
-                      onPressed: () {},
-                      child: const Icon(Icons.arrow_circle_right_outlined)),
+                  Visibility(
+                    visible: _updateInProgress==false,
+                    replacement:  const Center(child: CircularProgressIndicator()),
+                    child: ElevatedButton(
+                        onPressed: () {
+                          updateProfile();
+                        },
+                        child: const Icon(Icons.arrow_circle_right_outlined)),
+                  ),
                 ],
               ),
             ),
@@ -117,30 +144,115 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     _mobileController.dispose();
     _passwordController.dispose();
   }
-}
 
-Container _buildPhotPicker() {
-  return Container(
-    width: double.maxFinite,
-    height: 48,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(8),
-      color: Colors.white,
-    ),
-    alignment: Alignment.centerLeft,
-    child: Container(
-      alignment: Alignment.center,
-      width: 100,
-      height: 48,
-      decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(8), bottomLeft: Radius.circular(8)),
-          color: Colors.grey),
-      child: const Text(
-        'Photo',
-        style: TextStyle(
-            fontSize: 16, color: Colors.white, fontWeight: FontWeight.w500),
-      ),
-    ),
-  );
+  Widget _buildPhotPicker() {
+    return GestureDetector(
+      onTap: _pickProfileImage,
+      child: Container(
+          width: double.maxFinite,
+          height: 48,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: Colors.white,
+          ),
+          alignment: Alignment.centerLeft,
+          child: Row(
+            children: [
+              Container(
+                alignment: Alignment.center,
+                width: 100,
+                height: 48,
+                decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(8),
+                        bottomLeft: Radius.circular(8)),
+                    color: Colors.grey),
+                child: const Text(
+                  'Photo',
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500),
+                ),
+              ),
+              const SizedBox(
+                width: 16,
+              ),
+              Expanded(
+                  child: Text(
+                _selectedImage?.name ?? 'No image selected',
+                maxLines: 1,
+                style: const TextStyle(overflow: TextOverflow.ellipsis),
+              ))
+            ],
+          )),
+    );
+  }
+
+  Future<void> _pickProfileImage() async {
+    ImagePicker imagePicker = ImagePicker();
+    final XFile? result =
+        await imagePicker.pickImage(source: ImageSource.gallery);
+    if (result != null) {
+      _selectedImage = result;
+      if (mounted) {
+        setState(() {
+          _selectedImage = result;
+        });
+      }
+    }
+  }
+
+  Future<void> updateProfile() async {
+    String encodedPhoto = AuthController.userData?.photo ?? '';
+    if (mounted) {
+      setState(() {
+        _updateInProgress = true;
+      });
+    }
+    Map<String, dynamic> requestBody = {
+      "email": _emailController.text.trim(),
+      "firstName": _firstNameController.text.trim(),
+      "lastName": _lastNameController.text.trim(),
+      "mobile": _mobileController.text.trim(),
+    };
+    if (_passwordController.text.isNotEmpty) {
+      requestBody['password'] = _passwordController.text;
+    }
+    if (_selectedImage != null) {
+      File file = File(_selectedImage!.path);
+
+      encodedPhoto = base64Encode(file.readAsBytesSync());
+
+      requestBody['photo'] = encodedPhoto;
+    }
+    final NetworkResponse response =
+        await NetworkCaller.postRequest(Urls.profileUpdate, body: requestBody);
+    if (response.isSuccess) {
+      UserModel userModel = UserModel(
+        email: _emailController.text.trim(),
+        firstName: _firstNameController.text.trim(),
+        lastName: _lastNameController.text.trim(),
+        mobile: _mobileController.text.trim(),
+        photo: encodedPhoto,
+      );
+      await AuthController.saveUserData(userModel);
+       if (mounted) {
+        showSnackBarMessage(
+          context,'Profile Updated',
+        );
+      }
+    } else {
+      if (mounted) {
+        showSnackBarMessage(
+          context,'Profile update failed! try again',
+        );
+      }
+    }
+        if (mounted) {
+      setState(() {
+        _updateInProgress = false;
+      });
+    }
+  }
 }
