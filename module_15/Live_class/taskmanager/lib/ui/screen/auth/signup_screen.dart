@@ -132,9 +132,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         hintText: "Password",
                         suffixIcon: IconButton(
                           onPressed: () {
-                            _showPassword = !_showPassword;
                             if (mounted) {
-                              setState(() {});
+                              setState(() {
+                                _showPassword = !_showPassword;
+                              });
                             }
                           },
                           icon: Icon(_showPassword
