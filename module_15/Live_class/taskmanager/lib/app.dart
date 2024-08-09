@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:taskmanager/controller_binder.dart';
 import 'package:taskmanager/ui/screen/auth/splash_screen.dart';
 import 'package:taskmanager/ui/utility/color.dart';
 
@@ -9,7 +11,8 @@ class TaskManagerApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
+      initialBinding: ControllerBinder(),
       debugShowCheckedModeBanner: false,
       navigatorKey: TaskManagerApp.navigatorKey,
       theme: lightThemeData(),
@@ -38,7 +41,7 @@ ThemeData lightThemeData() {
       ),
       textTheme: const TextTheme(
           titleLarge: TextStyle(
-              fontSize: 28, fontWeight: FontWeight.bold, color: Colors.black),
+              fontSize: 28, fontWeight: FontWeight.bold, color: Colors.green),
           titleSmall: TextStyle(
               fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey)),
       textButtonTheme: TextButtonThemeData(

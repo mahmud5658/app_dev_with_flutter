@@ -1,10 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:taskmanager/data/model/login_model.dart';
-import 'package:taskmanager/data/model/network_response.dart';
-import 'package:taskmanager/data/network_caller/network_caller.dart';
-import 'package:taskmanager/data/utilities/url.dart';
-import 'package:taskmanager/ui/controller/auth_controller.dart';
+import 'package:get/get.dart';
+import 'package:taskmanager/ui/controller/sign_in_controller.dart';
 import 'package:taskmanager/ui/screen/auth/email_verification_screen.dart';
 import 'package:taskmanager/ui/screen/auth/signup_screen.dart';
 import 'package:taskmanager/ui/screen/task/main_bottom_screen.dart';
@@ -26,8 +23,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  final SignInController signInController = Get.find<SignInController>();
+
   bool _showPassword = false;
-  bool _logInProgress = false;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 120,
                   ),
                   Text(
-                    'Get Started With',
+                    'Get started with',
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   const SizedBox(
@@ -83,8 +81,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         suffixIcon: IconButton(
                           onPressed: () {
                             _showPassword = !_showPassword;
-                            if (mounted) {
-                              setState(() {});
+                            if(mounted){
+                              setState(() {
+                                
+                              });
                             }
                           },
                           icon: Icon(_showPassword
@@ -103,17 +103,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(
                     height: 16,
                   ),
-                  Visibility(
-                    visible: _logInProgress == false,
-                    replacement: const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          _onTapNextButton();
-                        },
-                        child: const Icon(Icons.arrow_circle_right_outlined)),
-                  ),
+                  GetBuilder<SignInController>(builder: (signController) {
+                    return Visibility(
+                      visible: signController.logInProgress == false,
+                      replacement: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                      child: ElevatedButton(
+                          onPressed: () {
+                            _onTapNextButton();
+                          },
+                          child: const Icon(Icons.arrow_circle_right_outlined)),
+                    );
+                  }),
                   const SizedBox(
                     height: 36,
                   ),
@@ -155,59 +157,27 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void _login() async {
-    if (mounted) {
-      setState(() {
-        _logInProgress = true;
-      });
-    }
-    Map<String, dynamic> requestInput = {
-      "email": _emailController.text.trim(),
-      "password": _passwordController.text,
-    };
-    NetworkResponse response =
-        await NetworkCaller.postRequest(Urls.login, body: requestInput);
-
-    if (mounted) {
-      setState(() {
-        _logInProgress = false;
-      });
-    }
-
-    if (response.isSuccess) {
-      LoginModel loginModel = LoginModel.fromJson(response.responseData);
-
-      await AuthController.saveUserAccessToken(loginModel.token!);
-      await AuthController.saveUserData(loginModel.userModel!);
-      if (mounted) {
-        showSnackBarMessage(context, 'Login success');
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const BottomNavScreen()));
-      }
-    } else {
-      if (mounted) {
-        showSnackBarMessage(
-            context, response.errorMessage ?? 'Login failed! try again');
-      }
-    }
-  }
-
-  void _onTapNextButton() {
+  void _onTapNextButton() async {
     if (_formKey.currentState!.validate()) {
-      _login();
+      final bool result = await signInController.logIn(
+          _emailController.text.trim(), _passwordController.text);
+
+      if (result) {
+        Get.offAll(() => const BottomNavScreen());
+      } else {
+        if (mounted) {
+          showSnackBarMessage(context, signInController.errorMessage);
+        }
+      }
     }
   }
 
   void _onTapSignUpButton() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const SignUpScreen()));
+    Get.to(() => const SignUpScreen());
   }
 
   void _onTapForgotPassword() {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => const EmailVerificationScreen()));
+    Get.to(() => const EmailVerificationScreen());
   }
 
   @override
