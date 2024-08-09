@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:taskmanager/data/model/network_response.dart';
-import 'package:taskmanager/data/model/task_list_wraper_model.dart';
-import 'package:taskmanager/data/model/task_model.dart';
-import 'package:taskmanager/data/network_caller/network_caller.dart';
-import 'package:taskmanager/data/utilities/url.dart';
+import 'package:get/get.dart';
+import 'package:taskmanager/ui/controller/in_progress_task_controller.dart';
 import 'package:taskmanager/ui/widgets/snack_bar_message.dart';
 import 'package:taskmanager/ui/widgets/task_item.dart';
 
@@ -15,13 +12,13 @@ class InProgressTaskScreen extends StatefulWidget {
 }
 
 class _InProgressTaskScreenState extends State<InProgressTaskScreen> {
-  bool _inProgess = false;
-  List<TaskModel> inProgressTaskList = [];
+  final InProgressTaskController inProgressTaskController =
+      Get.find<InProgressTaskController>();
 
   @override
   void initState() {
     super.initState();
-    _getInProgressTask();
+    getInProgress();
   }
 
   @override
@@ -31,52 +28,39 @@ class _InProgressTaskScreenState extends State<InProgressTaskScreen> {
         padding: const EdgeInsets.only(top: 8, right: 8, left: 8),
         child: RefreshIndicator(
           onRefresh: () async {
-            _getInProgressTask();
+            getInProgress();
           },
-          child: Visibility(
-            visible: _inProgess == false,
-            replacement: const Center(
-              child: CircularProgressIndicator(),
-            ),
-            child: ListView.builder(
-                itemCount: inProgressTaskList.length,
-                itemBuilder: (context, index) {
-                  return TaskItem(
-                    taskModel: inProgressTaskList[index],
-                    onUpdateTask: () {
-                      _getInProgressTask();
-                    },
-                  );
-                }),
-          ),
+          child: GetBuilder<InProgressTaskController>(
+              builder: (inProgressTaskController) {
+            return Visibility(
+              visible: inProgressTaskController.inProgress == false,
+              replacement: const Center(
+                child: CircularProgressIndicator(),
+              ),
+              child: ListView.builder(
+                  itemCount: inProgressTaskController.inProgressTaskList.length,
+                  itemBuilder: (context, index) {
+                    return TaskItem(
+                      taskModel:
+                          inProgressTaskController.inProgressTaskList[index],
+                      onUpdateTask: () {
+                        getInProgress();
+                      },
+                    );
+                  }),
+            );
+          }),
         ),
       ),
     );
   }
 
-  Future<void> _getInProgressTask() async {
-    if (mounted) {
-      setState(() {
-        _inProgess = true;
-      });
-    }
-    NetworkResponse response =
-        await NetworkCaller.getRequest(Urls.inProgressTask);
-
-    if (response.isSuccess) {
-      TaskListWraperModel taskListWraperModel =
-          TaskListWraperModel.fromJson(response.responseData);
-      inProgressTaskList = taskListWraperModel.taskList ?? [];
-    } else {
+  void getInProgress() async {
+    final result = await inProgressTaskController.getInProgressTask();
+    if (result == false) {
       if (mounted) {
-        showSnackBarMessage(context,
-            response.errorMessage ?? 'Get In Progress task failed! try again');
+        showSnackBarMessage(context, inProgressTaskController.errorMessage);
       }
-    }
-    if (mounted) {
-      setState(() {
-        _inProgess = false;
-      });
     }
   }
 }

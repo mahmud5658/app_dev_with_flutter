@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:taskmanager/data/model/network_response.dart';
@@ -135,15 +134,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     );
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    _emailController.dispose();
-    _firstNameController.dispose();
-    _lastNameController.dispose();
-    _mobileController.dispose();
-    _passwordController.dispose();
-  }
 
   Widget _buildPhotPicker() {
     return GestureDetector(
@@ -254,5 +244,15 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         _updateInProgress = false;
       });
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _emailController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _mobileController.dispose();
+    _passwordController.dispose();
   }
 }

@@ -1,9 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:taskmanager/data/model/network_response.dart';
-import 'package:taskmanager/data/network_caller/network_caller.dart';
-import 'package:taskmanager/data/utilities/url.dart';
+import 'package:taskmanager/ui/controller/pin_verification_controller.dart';
 import 'package:taskmanager/ui/screen/auth/signin_screen.dart';
 import 'package:taskmanager/ui/screen/auth/reset_password_screen.dart';
 import 'package:taskmanager/ui/utility/color.dart';
@@ -23,12 +22,9 @@ class PinVerificationScreen extends StatefulWidget {
 }
 
 class _PinVerificationScreenState extends State<PinVerificationScreen> {
-  
-
-    String _pinCode='';
-
-  bool _pinInProgress = false;
-
+  final PinVerificationController pinVerificationController =
+      Get.find<PinVerificationController>();
+  String _pinCode = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,17 +54,20 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
                 const SizedBox(
                   height: 16,
                 ),
-                Visibility(
-                  visible: _pinInProgress == false,
-                  replacement: const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                  child: ElevatedButton(
-                      onPressed: () {
-                        _pinVerify();
-                      },
-                      child: const Text('Verify')),
-                ),
+                GetBuilder<PinVerificationController>(
+                    builder: (pinVerificationController) {
+                  return Visibility(
+                    visible: pinVerificationController.pinInProgress == false,
+                    replacement: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    child: ElevatedButton(
+                        onPressed: () {
+                          _onTapNextButton();
+                        },
+                        child: const Text('Verify')),
+                  );
+                }),
                 const SizedBox(
                   height: 36,
                 ),
@@ -118,8 +117,7 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
       backgroundColor: Colors.transparent,
       enableActiveFill: true,
       appContext: context,
-      onCompleted: (value) {
-      },
+      onCompleted: (value) {},
       onChanged: (value) {
         if (mounted) {
           setState(() {
@@ -129,43 +127,18 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
       },
     );
   }
-
-  void _onTapVerifyButton() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) =>  ResetPasswordScreen(email: widget.email,opt: _pinCode,)));
-  }
-
-  void _onTapSignInButton() {
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => const LoginScreen()),
-        (route) => false);
-  }
-
-  Future<void> _pinVerify() async {
-    if (mounted) {
-      setState(() {
-        _pinInProgress = true;
-      });
-    }
-    NetworkResponse response =
-        await NetworkCaller.getRequest(Urls.verifyOtp(widget.email, _pinCode));
-
-    if (response.isSuccess) {
-      _onTapVerifyButton();
-      if (mounted) {
-        showSnackBarMessage(context, 'Pin Verification successed');
-      }
+  void _onTapNextButton() async {
+    final result =
+        await pinVerificationController.pinVerify(widget.email, _pinCode);
+    if (result) {
+      Get.to(() => ResetPasswordScreen(email: widget.email, otp: _pinCode));
     } else {
       if (mounted) {
-        showSnackBarMessage(context,
-            response.errorMessage ?? 'Pin verification failed! Try again');
+        showSnackBarMessage(context, pinVerificationController.errorMessage);
       }
     }
-    if (mounted) {
-      setState(() {
-        _pinInProgress = false;
-      });
-    }
+  }
+  void _onTapSignInButton() {
+    Get.offAll(() => const LoginScreen());
   }
 }
