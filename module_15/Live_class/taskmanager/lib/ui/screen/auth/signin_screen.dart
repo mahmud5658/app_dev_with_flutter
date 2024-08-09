@@ -20,9 +20,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   final SignInController signInController = Get.find<SignInController>();
 
   bool _showPassword = false;
@@ -124,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         TextButton(
                             onPressed: () {
-                              _onTapForgotPassword();
+                             Get.to(() => const EmailVerificationScreen());
                             },
                             child: const Text(
                               'Forgot Password?',
@@ -159,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _onTapNextButton() async {
     if (_formKey.currentState!.validate()) {
-      final bool result = await signInController.logIn(
+      final bool result = await signInController.signIn(
           _emailController.text.trim(), _passwordController.text);
 
       if (result) {
@@ -175,11 +173,6 @@ class _LoginScreenState extends State<LoginScreen> {
   void _onTapSignUpButton() {
     Get.to(() => const SignUpScreen());
   }
-
-  void _onTapForgotPassword() {
-    Get.to(() => const EmailVerificationScreen());
-  }
-
   @override
   void dispose() {
     super.dispose();

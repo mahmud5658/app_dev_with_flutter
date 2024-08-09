@@ -1,8 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:taskmanager/data/model/network_response.dart';
-import 'package:taskmanager/data/network_caller/network_caller.dart';
-import 'package:taskmanager/data/utilities/url.dart';
+import 'package:get/get.dart';
+import 'package:taskmanager/ui/controller/email_verification_controller.dart';
 import 'package:taskmanager/ui/screen/auth/pin_verification_screen.dart';
 import 'package:taskmanager/ui/utility/app_constant.dart';
 import 'package:taskmanager/ui/utility/color.dart';
@@ -18,11 +17,11 @@ class EmailVerificationScreen extends StatefulWidget {
 }
 
 class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
 
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  bool _verifyInProgress = false;
+  final EmailVerificationController emailVerificationController =
+      Get.find<EmailVerificationController>();
 
   late final String email;
 
@@ -75,19 +74,24 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                   const SizedBox(
                     height: 16,
                   ),
-                  Visibility(
-                    visible: _verifyInProgress == false,
-                    replacement: const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            _verifyEmail();
-                          }
-                        },
-                        child: const Icon(Icons.arrow_circle_right_outlined)),
-                  ),
+                  GetBuilder<EmailVerificationController>(
+                      builder: (emailVerificationController) {
+                    return Visibility(
+                      visible:
+                          emailVerificationController.verificationInProgress ==
+                              false,
+                      replacement: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                      child: ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              _onTapNextButton();
+                            }
+                          },
+                          child: const Icon(Icons.arrow_circle_right_outlined)),
+                    );
+                  }),
                   const SizedBox(
                     height: 36,
                   ),
@@ -118,41 +122,20 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     );
   }
 
-  void _onTapSignInButton() {
-    Navigator.pop(context);
-  }
-
-  void _onConfirmButton() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) =>  PinVerificationScreen(email: email,)));
-  }
-
-  Future<void> _verifyEmail() async {
-    if (mounted) {
-      setState(() {
-        _verifyInProgress = true;
-      });
-    }
+  void _onTapNextButton() async {
     email = _emailController.text.trim();
-    NetworkResponse response = await NetworkCaller.getRequest(
-        Urls.verifyEmail(_emailController.text.trim()));
-
-    if (response.isSuccess) {
-      _onConfirmButton();
-      if (mounted) {
-        showSnackBarMessage(context, "otp send to your email address");
-      }
+    bool result = await emailVerificationController.verifyEmail(email);
+    if (result) {
+      Get.to(() => PinVerificationScreen(email: email));
     } else {
       if (mounted) {
-        showSnackBarMessage(
-            context, response.errorMessage ?? 'email verify failed! Try again');
+        showSnackBarMessage(context, emailVerificationController.errorMessage);
       }
     }
-    if (mounted) {
-      setState(() {
-        _verifyInProgress = false;
-      });
-    }
+  }
+
+  void _onTapSignInButton() {
+    Get.back();
   }
 
   @override

@@ -11,7 +11,7 @@ class SignInController extends GetxController {
   String _errorMessage = '';
   String get errorMessage => _errorMessage;
 
-  Future<bool> logIn(email, password) async {
+  Future<bool> signIn(email, password) async {
     bool isSuccess = false;
     _logInProgress = true;
     update();
