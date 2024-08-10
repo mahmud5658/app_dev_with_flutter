@@ -1,12 +1,7 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:taskmanager/data/model/network_response.dart';
-import 'package:taskmanager/data/model/user_model.dart';
-import 'package:taskmanager/data/network_caller/network_caller.dart';
-import 'package:taskmanager/data/utilities/url.dart';
+import 'package:get/get.dart';
 import 'package:taskmanager/ui/controller/auth_controller.dart';
+import 'package:taskmanager/ui/controller/update_profile_controller.dart';
 import 'package:taskmanager/ui/widgets/background_widgets.dart';
 import 'package:taskmanager/ui/widgets/profile_app_bar.dart';
 import 'package:taskmanager/ui/widgets/snack_bar_message.dart';
@@ -25,8 +20,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   final TextEditingController _mobileController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  XFile? _selectedImage;
-  bool _updateInProgress = false;
+
+  final UpdateProfileController updateProfileController =
+      Get.find<UpdateProfileController>();
 
   @override
   void initState() {
@@ -116,15 +112,20 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                   const SizedBox(
                     height: 16,
                   ),
-                  Visibility(
-                    visible: _updateInProgress==false,
-                    replacement:  const Center(child: CircularProgressIndicator()),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          updateProfile();
-                        },
-                        child: const Icon(Icons.arrow_circle_right_outlined)),
-                  ),
+                  GetBuilder<UpdateProfileController>(
+                      builder: (updateProfileController) {
+                    return Visibility(
+                      visible:
+                          updateProfileController.updateInProgress == false,
+                      replacement:
+                          const Center(child: CircularProgressIndicator()),
+                      child: ElevatedButton(
+                          onPressed: () {
+                            updateProfile();
+                          },
+                          child: const Icon(Icons.arrow_circle_right_outlined)),
+                    );
+                  })
                 ],
               ),
             ),
@@ -134,10 +135,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     );
   }
 
-
   Widget _buildPhotPicker() {
     return GestureDetector(
-      onTap: _pickProfileImage,
+      onTap: updateProfileController.pickProfileImage,
       child: Container(
           width: double.maxFinite,
           height: 48,
@@ -168,81 +168,30 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
               const SizedBox(
                 width: 16,
               ),
-              Expanded(
-                  child: Text(
-                _selectedImage?.name ?? 'No image selected',
-                maxLines: 1,
-                style: const TextStyle(overflow: TextOverflow.ellipsis),
-              ))
+              Expanded(child: GetBuilder<UpdateProfileController>(builder: (updateProfileController) {
+                return Text(
+                  updateProfileController.selectedImage?.name ??
+                      'No image selected',
+                  maxLines: 1,
+                  style: const TextStyle(overflow: TextOverflow.ellipsis),
+                );
+              }))
             ],
           )),
     );
   }
 
-  Future<void> _pickProfileImage() async {
-    ImagePicker imagePicker = ImagePicker();
-    final XFile? result =
-        await imagePicker.pickImage(source: ImageSource.gallery);
-    if (result != null) {
-      _selectedImage = result;
+  void updateProfile() async {
+    final result = await updateProfileController.updateProfile(
+        _emailController.text.trim(),
+        _firstNameController.text.trim(),
+        _lastNameController.text.trim(),
+        _mobileController.text.trim(),
+        _passwordController.text);
+    if (result == false) {
       if (mounted) {
-        setState(() {
-          _selectedImage = result;
-        });
+        showSnackBarMessage(context, updateProfileController.errorMessage);
       }
-    }
-  }
-
-  Future<void> updateProfile() async {
-    String encodedPhoto = AuthController.userData?.photo ?? '';
-    if (mounted) {
-      setState(() {
-        _updateInProgress = true;
-      });
-    }
-    Map<String, dynamic> requestBody = {
-      "email": _emailController.text.trim(),
-      "firstName": _firstNameController.text.trim(),
-      "lastName": _lastNameController.text.trim(),
-      "mobile": _mobileController.text.trim(),
-    };
-    if (_passwordController.text.isNotEmpty) {
-      requestBody['password'] = _passwordController.text;
-    }
-    if (_selectedImage != null) {
-      File file = File(_selectedImage!.path);
-
-      encodedPhoto = base64Encode(file.readAsBytesSync());
-
-      requestBody['photo'] = encodedPhoto;
-    }
-    final NetworkResponse response =
-        await NetworkCaller.postRequest(Urls.profileUpdate, body: requestBody);
-    if (response.isSuccess) {
-      UserModel userModel = UserModel(
-        email: _emailController.text.trim(),
-        firstName: _firstNameController.text.trim(),
-        lastName: _lastNameController.text.trim(),
-        mobile: _mobileController.text.trim(),
-        photo: encodedPhoto,
-      );
-      await AuthController.saveUserData(userModel);
-       if (mounted) {
-        showSnackBarMessage(
-          context,'Profile Updated',
-        );
-      }
-    } else {
-      if (mounted) {
-        showSnackBarMessage(
-          context,'Profile update failed! try again',
-        );
-      }
-    }
-        if (mounted) {
-      setState(() {
-        _updateInProgress = false;
-      });
     }
   }
 
