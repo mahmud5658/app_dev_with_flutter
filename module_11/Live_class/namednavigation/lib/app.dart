@@ -9,19 +9,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/',
-      onGenerateRoute: _getMaterailPageRoute
-    );
+        initialRoute: '/', onGenerateRoute: _getMaterialPageRoute,);
   }
 
-  MaterialPageRoute? _getMaterailPageRoute(RouteSettings settings){
-     Widget? widget;
+  MaterialPageRoute? _getMaterialPageRoute(RouteSettings settings) {
+    Widget? widget;
     switch (settings.name) {
       case HomeScreen.routeName:
         widget = const HomeScreen();
         break;
-      case SettinScreen.routeName:
-        widget = const SettinScreen();
+      case SettingScreen.routeName:
+        final args = settings.arguments as ScreenArgument;
+        widget = SettingScreen(
+          name: args.name,
+          age: args.age,
+        );
         break;
       case ProfileScreen.routeName:
         String name = settings.arguments as String;

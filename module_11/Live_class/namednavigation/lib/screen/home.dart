@@ -18,13 +18,14 @@ class HomeScreen extends StatelessWidget {
           children: [
             ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, SettinScreen.routeName,
-                      arguments: {'name': 'Abdullah Al Mahmud'});
+                  Navigator.pushNamed(context, SettingScreen.routeName,
+                      arguments:  ScreenArgument(name: 'Abdullah Al Mahmud', age: 25));
                 },
                 child: const Text('Settings')),
             ElevatedButton(
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, ProfileScreen.routeName,
+                  Navigator.pushReplacementNamed(
+                      context, ProfileScreen.routeName,
                       arguments: 'Rafat');
                 },
                 child: const Text('Profile'))
