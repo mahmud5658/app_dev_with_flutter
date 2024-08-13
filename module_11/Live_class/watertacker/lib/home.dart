@@ -12,8 +12,16 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _glassCountController =
       TextEditingController(text: '1');
   List<WaterConsume> waterConsumeList = [];
+
+  final ScrollController _scrollController = ScrollController();
+
+  _scrollToBottom() {
+    _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+  }
+
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
@@ -21,7 +29,6 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
               child: Column(
@@ -30,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     onTap: _addWaterConsume,
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(360),
+                        shape: BoxShape.circle,
                         border: Border.all(color: Colors.amber, width: 8),
                       ),
                       child: const Padding(
@@ -48,17 +55,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 20,
                   ),
                   SizedBox(
-                    width: 100,
+                    width: 150,
                     child: TextField(
                       controller: _glassCountController,
                       textAlign: TextAlign.center,
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.green)),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.green)),
-                          labelText: 'No of glass'),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.green)),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.green)),
+                        labelText: 'No of glass',
+                        labelStyle: TextStyle(color: Colors.black),
+                        floatingLabelAlignment: FloatingLabelAlignment.center,
+                      ),
                     ),
                   ),
                 ],
@@ -80,16 +90,25 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             const Divider(
+              color: Colors.black,
+              thickness: 3,
               height: 20,
             ),
             Expanded(
               child: ListView.builder(
+                  controller: _scrollController,
+                  shrinkWrap: true,
+                  // reverse: true,
                   itemCount: waterConsumeList.length,
                   itemBuilder: (context, index) {
                     return ListTile(
-                      title: Text(DateFormat.yMEd().add_jms().format(waterConsumeList[index].time)),
+                      title: Text(DateFormat.yMEd()
+                          .add_jms()
+                          .format(waterConsumeList[index].time)),
                       leading: CircleAvatar(
-                        child: Text('$index'),
+                        backgroundColor: Colors.black,
+                        foregroundColor: Colors.white,
+                        child: Text('${index + 1}'),
                       ),
                       trailing: Text(
                         waterConsumeList[index].glassCount.toString(),
