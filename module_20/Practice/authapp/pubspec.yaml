@@ -40,6 +40,8 @@ dependencies:
   cloud_firestore: ^5.2.1
   firebase_auth: ^5.1.4
   fluttertoast: ^8.2.7
+  country_code_picker: ^3.0.0
+  pin_code_fields: ^8.0.1
 
 dev_dependencies:
   flutter_test:

@@ -1,7 +1,9 @@
+import 'package:authapp/screen/posts/post_scree.dart';
 import 'package:authapp/utils/utils.dart';
 import 'package:authapp/widgets/round_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 
 class VerifyScreen extends StatefulWidget {
   final String verificationId;
@@ -12,13 +14,13 @@ class VerifyScreen extends StatefulWidget {
 }
 
 class _VerifyScreenState extends State<VerifyScreen> {
-  final TextEditingController _phoneNumberController = TextEditingController();
+  String _pinCode = '';
   bool _loading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: const Text('Verify'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -27,12 +29,33 @@ class _VerifyScreenState extends State<VerifyScreen> {
             const SizedBox(
               height: 80,
             ),
-            TextFormField(
-              controller: _phoneNumberController,
+            PinCodeTextField(
+              length: 6,
+              obscureText: false,
+              animationType: AnimationType.fade,
               keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Enter your phone number'),
+              pinTheme: PinTheme(
+                shape: PinCodeFieldShape.box,
+                borderRadius: BorderRadius.circular(5),
+                fieldHeight: 50,
+                fieldWidth: 40,
+                activeFillColor: Colors.white,
+                selectedFillColor: Colors.white,
+                inactiveFillColor: Colors.white,
+                selectedColor: Colors.deepPurple,
+              ),
+              animationDuration: const Duration(milliseconds: 300),
+              backgroundColor: Colors.transparent,
+              enableActiveFill: true,
+              appContext: context,
+              onCompleted: (value) {},
+              onChanged: (value) {
+                if (mounted) {
+                  setState(() {
+                    _pinCode = value.toString();
+                  });
+                }
+              },
             ),
             const SizedBox(
               height: 30,
@@ -45,7 +68,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
               child: RoundButton(
                   title: 'Verify',
                   onTap: () async {
-                    await _verifyCode(context);
+                    await _verifyCode();
                   }),
             )
           ],
@@ -54,8 +77,27 @@ class _VerifyScreenState extends State<VerifyScreen> {
     );
   }
 
-  Future<void> _verifyCode(BuildContext context) async {
-
+  Future<void> _verifyCode() async {
+    setState(() {
+      _loading = true;
+    });
+    final credential = PhoneAuthProvider.credential(
+        verificationId: widget.verificationId,
+        smsCode: _pinCode);
+    try {
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      setState(() {
+        _loading = false;
+      });
+      if (mounted) {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const PostScreen()));
+      }
+    } catch (e) {
+      Utils.toastMessage(e.toString());
+      setState(() {
+        _loading = false;
+      });
+    }
   }
 }
-

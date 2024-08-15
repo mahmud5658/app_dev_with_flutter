@@ -1,6 +1,7 @@
 import 'package:authapp/screen/auth/verify_code.dart';
 import 'package:authapp/utils/utils.dart';
 import 'package:authapp/widgets/round_button.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +15,7 @@ class LoginWithPhoneScreen extends StatefulWidget {
 class _LoginWithPhoneScreenState extends State<LoginWithPhoneScreen> {
   final TextEditingController _phoneNumberController = TextEditingController();
   bool _loading = false;
+  String countryCode = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,8 +32,16 @@ class _LoginWithPhoneScreenState extends State<LoginWithPhoneScreen> {
             TextFormField(
               controller: _phoneNumberController,
               keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                  prefixIcon: CountryCodePicker(
+                    showFlagMain: false,
+                    initialSelection: 'BD',
+                  barrierColor: Colors.black,
+                    onChanged: (CountryCode value ) {
+                      countryCode = value.dialCode!;
+                    },
+                  ),
+                  border: const OutlineInputBorder(),
                   labelText: 'Enter your phone number'),
             ),
             const SizedBox(
@@ -59,7 +69,8 @@ class _LoginWithPhoneScreenState extends State<LoginWithPhoneScreen> {
       _loading = true;
     });
     await FirebaseAuth.instance.verifyPhoneNumber(
-        phoneNumber: _phoneNumberController.text.trim().toString(),
+        phoneNumber: countryCode.toString()+_phoneNumberController.text.toString(),
+        timeout: const Duration(seconds: 60),
         verificationCompleted: (_) {
           setState(() {
             _loading = false;
