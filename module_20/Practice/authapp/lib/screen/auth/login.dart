@@ -1,3 +1,4 @@
+import 'package:authapp/screen/auth/login_with_phone.dart';
 import 'package:authapp/screen/auth/sign_up.dart';
 import 'package:authapp/screen/posts/post_scree.dart';
 import 'package:authapp/utils/utils.dart';
@@ -127,6 +128,33 @@ class _LoginScreenState extends State<LoginScreen> {
                             ..onTap = _onTapSignUpButton)
                     ]),
               ),
+              const SizedBox(
+                height: 30,
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginWithPhoneScreen()));
+                },
+                child: Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.black),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      'Login with phone',
+                      style: TextStyle(
+                          color: Colors.deepPurple,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ),
@@ -145,8 +173,10 @@ class _LoginScreenState extends State<LoginScreen> {
             password: _passwordController.text.toString());
         Utils.toastMessage('Successfully loged in');
         if (mounted) {
-          Navigator.pushAndRemoveUntil(context,
-              MaterialPageRoute(builder: (context) => const PostScreen()),(route)=>false);
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const PostScreen()),
+              (route) => false);
         }
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
