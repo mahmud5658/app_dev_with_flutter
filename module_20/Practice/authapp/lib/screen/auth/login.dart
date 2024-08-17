@@ -1,6 +1,6 @@
 import 'package:authapp/screen/auth/login_with_phone.dart';
 import 'package:authapp/screen/auth/sign_up.dart';
-import 'package:authapp/screen/posts/post_scree.dart';
+import 'package:authapp/screen/posts/post_screen.dart';
 import 'package:authapp/utils/utils.dart';
 import 'package:authapp/widgets/round_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';

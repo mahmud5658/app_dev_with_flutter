@@ -1,4 +1,5 @@
 import 'package:authapp/screen/auth/login.dart';
+import 'package:authapp/screen/posts/add_post_screen.dart';
 import 'package:authapp/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,13 @@ class PostScreen extends StatelessWidget {
               },
               icon: const Icon(Icons.logout_outlined))
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const AddPostScreen()));
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }

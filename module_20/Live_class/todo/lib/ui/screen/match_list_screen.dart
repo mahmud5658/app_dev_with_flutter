@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:todo/entities/football.dart';
 import 'package:todo/ui/widgets/football_score_card.dart';
@@ -12,6 +13,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  final DatabaseReference databaseReference =
+      FirebaseDatabase.instance.ref('User');
   List<Football> matchList = [];
 
   Future<void> _getFootballMatch() async {
@@ -61,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           }
           matchList.clear();
-         for (QueryDocumentSnapshot doc in snapshot.data?.docs??[]) {
+          for (QueryDocumentSnapshot doc in snapshot.data?.docs ?? []) {
             matchList.add(Football(
                 matchName: doc.id,
                 team1Name: doc.get('team1Name'),
@@ -77,6 +80,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               });
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          databaseReference
+              .child('1').child('Details').child('address')
+              .set({'name': 'Abdullah Al Mahmud', 'ID': '221-15-5658'});
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:authapp/screen/auth/login.dart';
-import 'package:authapp/screen/posts/post_scree.dart';
+import 'package:authapp/screen/posts/post_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
