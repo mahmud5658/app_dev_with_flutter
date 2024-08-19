@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todo/ui/screen/match_list_screen.dart';
 
-class TodoApp extends StatelessWidget {
-  const TodoApp({super.key});
+class LiveScore extends StatelessWidget {
+  const LiveScore({super.key});
 
   @override
   Widget build(BuildContext context) {

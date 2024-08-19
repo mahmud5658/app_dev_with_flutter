@@ -81,14 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
               });
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          databaseReference
-              .child('1').child('Details').child('address')
-              .set({'name': 'Abdullah Al Mahmud', 'ID': '221-15-5658'});
-        },
-        child: const Icon(Icons.add),
-      ),
+
     );
   }
 }
